@@ -1,14 +1,58 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
+  <ion-navbar color="header">
+    <button ion-button menuToggle>
+      <ion-icon name="menu">
+      </ion-icon>
+    </button>
+    <ion-title text-center>Home
     </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only light color="shadowlite" (click)="getSearch()">
+        <ion-icon ios="ios-search" md="md-search">
+        </ion-icon>
+      </button>
+      <button ion-button icon-only light class="has-icon icon-only has-badge" (click)="getCart()">
+        <ion-icon class="ion-ios-cart item-icon">
+        </ion-icon>
+        <ion-badge class="badge badge-light" *ngIf="values.count != 0">{{values.count}}
+        </ion-badge>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
-
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+<ion-content class="home">
+    <ion-spinner *ngIf="!service?.banners" name="crescent">
+    </ion-spinner>
+  <div *ngIf="service?.banners" class="home-banners">
+    <ion-slides pager="true" loop="true" autoplay="5800">
+      <ion-slide *ngFor='let value of service.banners'>
+        <img src="{{value}}">
+      </ion-slide>
+    </ion-slides>
+  </div>
+  <div *ngIf="service?.categories">
+    <div class="shop-name">
+      <ion-item no-lines>
+        <b color="side-heading-color" text-uppercase>{{"Shop"| translate}}
+        </b>
+      </ion-item>
+    </div>
+    <div *ngIf="service.mainCategories" class="main-categories">
+      <ion-row class="row unlimited-items">
+        <ion-col class="col" *ngFor="let item of service.mainCategories">
+          <a (click)="getCategory(item.id, item.slug)">
+            <ion-card>
+              <ion-card-content>
+                <img src="{{item.image}}"/>
+              </ion-card-content>
+              <div text-center>
+                <ion-label text-uppercase>{{item.name}}
+                </ion-label>
+              </div>
+            </ion-card>
+          </a>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
 </ion-content>
